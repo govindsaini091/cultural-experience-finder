@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cultural Experience Finder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Cultural Experience Finder</h1>
+    <p>Explore local cultural events and engage with regional heritage!</p>
+  </header>
+
+  <!-- Personalized Suggestions Section -->
+  <section id="personalized-suggestions">
+    <h2>Personalized Suggestions: Match Events to Your Interests</h2>
+    <div>
+      <h3>Select Your Interests</h3>
+      <form id="interest-form">
+        <label><input type="checkbox" id="music" /> Music</label>
+        <label><input type="checkbox" id="dance" /> Dance</label>
+        <label><input type="checkbox" id="food" /> Food</label>
+        <label><input type="checkbox" id="art" /> Art</label>
+        <label><input type="checkbox" id="theater" /> Theater</label>
+        <label><input type="checkbox" id="festival" /> Festival</label>
+      </form>
+      <div id="suggested-events">
+        <h4>Suggested Events</h4>
+        <ul id="event-list">
+          <!-- Suggested events will appear here -->
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tradition Preservation Section -->
+  <section id="tradition-preservation">
+    <h2>Tradition Preservation: Local Customs and Traditions</h2>
+    <p>Engage with events that promote cultural heritage and traditions.</p>
+    <div id="traditional-events">
+      <!-- Traditional events will be displayed here -->
+    </div>
+  </section>
+
+  <!-- Increased Engagement Section -->
+  <section id="increased-engagement">
+    <h2>Boost Your Cultural Engagement</h2>
+    <p>Save your favorite events and keep track of what you plan to attend!</p>
+    <div id="engagement-events">
+      <h4>Upcoming Cultural Events</h4>
+      <ul id="engagement-event-list">
+        <!-- Events with Save functionality -->
+      </ul>
+    </div>
+    <h4>Your Saved Events</h4>
+    <ul id="saved-events">
+      <!-- Saved events will appear here -->
+    </ul>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 Cultural Experience Finder. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Mock event data for demonstration purposes
+    const events = [
+      { id: 1, name: 'Jazz Music Festival', category: 'Music', description: 'Enjoy live jazz music.', date: '2024-12-30' },
+      { id: 2, name: 'Traditional Dance Performance', category: 'Dance', description: 'Experience local dance traditions.', date: '2024-12-25' },
+      { id: 3, name: 'Culinary Arts Expo', category: 'Food', description: 'Taste traditional dishes from around the world.', date: '2024-12-28' },
+      { id: 4, name: 'Heritage Art Exhibit', category: 'Art', description: 'Explore local heritage through art.', date: '2024-12-27' },
+      { id: 5, name: 'Local Theater Show', category: 'Theater', description: 'Watch a play based on cultural history.', date: '2024-12-26' },
+      { id: 6, name: 'Regional Food Festival', category: 'Food', description: 'Discover regional cuisines and traditions.', date: '2024-12-29' }
+    ];
+
+    // Filter and display personalized events based on interests
+    function displayPersonalizedEvents() {
+      const selectedCategories = [];
+      const interestForm = document.getElementById('interest-form');
+
+      for (let i = 0; i < interestForm.elements.length; i++) {
+        if (interestForm.elements[i].checked) {
+          selectedCategories.push(interestForm.elements[i].id);
+        }
+      }
+
+      const filteredEvents = events.filter(event =>
+        selectedCategories.some(category => event.category.toLowerCase() === category)
+      );
+
+      const eventList = document.getElementById('event-list');
+      eventList.innerHTML = '';
+
+      filteredEvents.forEach(event => {
+        const li = document.createElement('li');
+        li.textContent = `${event.name} - ${event.date}: ${event.description}`;
+        eventList.appendChild(li);
+      });
+    }
+
+    // Filter and display traditional/cultural events
+    function displayTraditionalEvents() {
+      const traditionalEvents = events.filter(event =>
+        event.category.toLowerCase().includes('traditional') ||
+        event.category.toLowerCase().includes('heritage')
+      );
+
+      const traditionalEventContainer = document.getElementById('traditional-events');
+      traditionalEventContainer.innerHTML = '';
+
+      traditionalEvents.forEach(event => {
+        const div = document.createElement('div');
+        div.textContent = `${event.name} - ${event.date}: ${event.description}`;
+        traditionalEventContainer.appendChild(div);
+      });
+    }
+
+    // Save events and track user engagement
+    function saveEvent(eventId) {
+      const savedEventsList = document.getElementById('saved-events');
+      const eventToSave = events.find(event => event.id === eventId);
+      const savedEventItem = document.createElement('li');
+      savedEventItem.textContent = `${eventToSave.name} - ${eventToSave.date}`;
+      savedEventsList.appendChild(savedEventItem);
+    }
+
+    // Display all events
+    function displayEngagementEvents() {
+      const engagementEventList = document.getElementById('engagement-event-list');
+      engagementEventList.innerHTML = '';
+
+      events.forEach(event => {
+        const li = document.createElement('li');
+        li.textContent = `${event.name} - ${event.date}: ${event.description}`;
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Save';
+        saveButton.onclick = () => saveEvent(event.id);
+        li.appendChild(saveButton);
+        engagementEventList.appendChild(li);
+      });
+    }
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+      displayPersonalizedEvents();
+      displayTraditionalEvents();
+      displayEngagementEvents();
+
+      const interestForm = document.getElementById('interest-form');
+      interestForm.addEventListener('change', displayPersonalizedEvents);
+    });
+  </script>
+</body>
+</html>
